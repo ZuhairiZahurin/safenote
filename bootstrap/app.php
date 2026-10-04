@@ -20,6 +20,11 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->appendToGroup('web', SessionTimeout::class);
         $middleware->appendToGroup('web', RequirePasswordChange::class);
+
+        // Behind a hosting platform's TLS proxy the app only sees plain HTTP.
+        // Trusting the forwarded headers keeps generated links on https and lets
+        // the session cookie be marked secure.
+        $middleware->trustProxies(at: '*');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

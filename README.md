@@ -72,6 +72,11 @@ a teacher is held to, student identity resolution, brute-force lockout, session
 timeout, audit logging, referrals, report printing, admin password issuing and the
 forced password change.
 
+## Deploying
+
+See [DEPLOYMENT.md](DEPLOYMENT.md). The repository carries a `Dockerfile`, so a
+platform that builds containers needs no further configuration.
+
 ## Two things to know before deploying
 
 `APP_KEY` decrypts every counselling note. It is not in this repository, and it
