@@ -40,6 +40,9 @@ class CounsellingRecordController extends Controller
             'search' => $search,
             'category' => $category,
             'issueType' => $issueType,
+            // The unfiltered size of the caseload, so a filtered list can say
+            // what it is a subset of.
+            'caseloadTotal' => CounsellingRecord::where('counsellor_id', Auth::id())->count(),
         ]);
     }
 

@@ -1,28 +1,46 @@
+@php
+    $categoryTone = [
+        \App\Models\CounsellingRecord::CATEGORY_ACADEMIC => 1,
+        \App\Models\CounsellingRecord::CATEGORY_BEHAVIOURAL => 2,
+        \App\Models\CounsellingRecord::CATEGORY_EMOTIONAL_WELFARE => 3,
+    ];
+    $statusTone = ['pending' => 'amber', 'in_review' => 'blue', 'closed' => 'green'];
+    $oldestDays = $longestWait
+        ? (int) abs(\Illuminate\Support\Carbon::parse($longestWait)->diffInDays())
+        : null;
+@endphp
+
 <x-app-layout>
     <x-slot name="header">
-        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-            <h2 class="h4 mb-0">{{ __('Referral Inbox') }}</h2>
-            @if ($pendingCount > 0)
-                <span class="sn-wait-note">
-                    <i class="bi bi-clock-history"></i>
-                    {{ trans_choice('{1} :count referral awaiting review|[2,*] :count referrals awaiting review', $pendingCount, ['count' => $pendingCount]) }}
-                    @if ($longestWait)
-                        &middot; {{ __('oldest waiting :days days', ['days' => (int) abs(\Illuminate\Support\Carbon::parse($longestWait)->diffInDays())]) }}
-                    @endif
-                </span>
-            @endif
-        </div>
+        <h2 class="h4 mb-0">{{ __('Referral Inbox') }}</h2>
     </x-slot>
+
+    <x-page-head :title="__('Referral Inbox')"
+                 :subtitle="__('Concerns raised by teachers. Opening one does not tell the teacher what you write.')"
+                 icon="bi-inbox"
+                 :tone="$pendingCount > 0 ? 'amber' : 'green'">
+        <x-slot name="stats">
+            <x-meter-chip :label="__('awaiting review')" :value="$pendingCount"
+                          :tone="$pendingCount > 0 ? 'amber' : 'green'" />
+            @if ($oldestDays !== null && $pendingCount > 0)
+                <x-meter-chip :label="__('days, oldest wait')" :value="$oldestDays"
+                              :tone="$oldestDays >= 3 ? 'red' : 'slate'" />
+            @endif
+            <x-meter-chip :label="__('referrals in total')" :value="$totalCount" />
+        </x-slot>
+
+        <x-slot name="actions">
+            <a href="{{ route('records.create') }}" class="btn btn-primary btn-sm">
+                <i class="bi bi-plus-lg me-1"></i>{{ __('New Record') }}
+            </a>
+        </x-slot>
+    </x-page-head>
 
     {{-- Status filter as tabs, so the workload is visible without opening a menu --}}
     <div class="sn-tabs mb-3">
-        @php
-            $tabs = ['' => __('All')] + \App\Models\Referral::STATUSES;
-        @endphp
+        @php $tabs = ['' => __('All')] + \App\Models\Referral::STATUSES; @endphp
         @foreach ($tabs as $key => $label)
-            @php
-                $count = $key === '' ? $totalCount : (int) ($counts[$key] ?? 0);
-            @endphp
+            @php $count = $key === '' ? $totalCount : (int) ($counts[$key] ?? 0); @endphp
             <a href="{{ route('referral-inbox.index', $key === '' ? [] : ['status' => $key]) }}"
                class="sn-tab {{ $status === $key ? 'is-active' : '' }}">
                 {{ $label }}
@@ -33,7 +51,7 @@
 
     <div class="card shadow-sm">
         <div class="table-responsive">
-            <table class="table mb-0 sn-inbox">
+            <table class="table sn-table sn-inbox mb-0">
                 <thead>
                     <tr>
                         <th>{{ __('Urgency') }}</th>
@@ -55,22 +73,29 @@
                         <tr class="{{ $referral->urgency === 'high' && $referral->status !== \App\Models\Referral::STATUS_CLOSED ? 'sn-row-urgent' : '' }}">
                             <td><x-urgency-badge :urgency="$referral->urgency" :label="$referral->urgency_label" /></td>
                             <td>
-                                <div class="fw-semibold">{{ $referral->student->name }}</div>
-                                <div class="sn-sub">{{ $referral->student->class ?? '—' }}</div>
+                                <div class="sn-cell-primary">{{ $referral->student->name }}</div>
+                                <div class="sn-cell-sub">{{ $referral->student->class ?? '—' }}</div>
                             </td>
-                            <td><span class="badge text-bg-light border">{{ $referral->issue_type_label }}</span></td>
-                            <td class="sn-sub">{{ $referral->teacher->name ?? '—' }}</td>
                             <td>
-                                <span class="{{ $isOverdue ? 'sn-overdue' : 'sn-sub' }}">
+                                <span class="sn-tag">
+                                    <span class="sn-tag-dot viz-tone-{{ $categoryTone[\App\Models\CounsellingRecord::ISSUE_TYPES[$referral->issue_type]['category'] ?? ''] ?? 4 }}"></span>
+                                    {{ $referral->issue_type_label }}
+                                </span>
+                            </td>
+                            <td class="sn-cell-sub">{{ $referral->teacher->name ?? '—' }}</td>
+                            <td>
+                                <div class="{{ $isOverdue ? 'sn-overdue' : 'sn-cell-primary' }}">
                                     @if ($days === 0)
                                         {{ __('Today') }}
                                     @else
                                         {{ trans_choice('{1} :count day|[2,*] :count days', $days, ['count' => $days]) }}
                                     @endif
-                                </span>
-                                <div class="sn-sub">{{ $referral->created_at->format('d M Y') }}</div>
+                                </div>
+                                <div class="sn-cell-sub">{{ $referral->created_at->format('d M Y') }}</div>
                             </td>
-                            <td><span class="badge text-bg-{{ $referral->status_variant }}">{{ $referral->status_label }}</span></td>
+                            <td>
+                                <span class="sn-pill sn-pill-{{ $statusTone[$referral->status] ?? 'slate' }}">{{ $referral->status_label }}</span>
+                            </td>
                             <td class="text-end">
                                 <a href="{{ route('referral-inbox.show', $referral) }}"
                                    class="btn btn-sm {{ $referral->status === \App\Models\Referral::STATUS_PENDING ? 'btn-primary' : 'btn-outline-primary' }}">
@@ -81,10 +106,15 @@
                     @empty
                         <tr>
                             <td colspan="7">
-                                <div class="sn-empty">
+                                <div class="sn-blank">
                                     <i class="bi bi-inbox"></i>
+                                    <div class="sn-blank-title">
+                                        {{ $status ? __('Nothing with this status.') : __('The inbox is empty.') }}
+                                    </div>
                                     <p class="mb-0">
-                                        {{ $status ? __('No referrals with this status.') : __('No referrals have been submitted yet.') }}
+                                        {{ $status
+                                            ? __('Choose another tab to see the rest.')
+                                            : __('Referrals raised by teachers will arrive here.') }}
                                     </p>
                                 </div>
                             </td>
