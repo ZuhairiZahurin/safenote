@@ -21,6 +21,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // A hosted deployment runs this on every boot, so seeding an already
+        // populated database must be a no-op rather than a duplicate key error.
+        if (User::query()->exists()) {
+            $this->command?->info('Accounts already exist, so the demo data was left alone.');
+
+            return;
+        }
+
         User::factory()->role(User::ROLE_ADMIN)->create([
             'name' => 'System Administrator',
             'email' => 'admin@safenote.test',
