@@ -1,7 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="h4 mb-0">{{ __('New Counselling Record') }}</h2>
+        <h2 class="h4 mb-0">{{ __('New Record') }}</h2>
     </x-slot>
+
+    <x-page-head :title="__('New Counselling Record')"
+                 :subtitle="__('The note is encrypted as it is saved, and only you will be able to open it.')"
+                 icon="bi-journal-plus" tone="blue" />
 
     <div class="card shadow-sm">
         <div class="card-body">

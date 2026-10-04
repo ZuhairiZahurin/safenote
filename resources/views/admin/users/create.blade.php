@@ -3,6 +3,10 @@
         <h2 class="h4 mb-0">{{ __('New User Account') }}</h2>
     </x-slot>
 
+    <x-page-head :title="__('New Staff Account')"
+                 :subtitle="__('The password you set here is known to you, so the holder will be asked to replace it before anything else opens.')"
+                 icon="bi-person-plus" tone="blue" />
+
     <div class="card shadow-sm">
         <div class="card-body">
             <form method="POST" action="{{ route('admin.users.store') }}">

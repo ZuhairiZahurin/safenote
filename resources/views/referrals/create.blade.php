@@ -1,7 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="h4 mb-0">{{ __('Refer a Student to the Counselling Unit') }}</h2>
+        <h2 class="h4 mb-0">{{ __('Refer a Student') }}</h2>
     </x-slot>
+
+    <x-page-head :title="__('Refer a Student to the Counselling Unit')"
+                 :subtitle="__('Describe what you have observed. The counsellor decides what happens next, and you will see the status only.')"
+                 icon="bi-send" tone="blue" />
 
     <div class="card shadow-sm">
         <div class="card-body">

@@ -1,7 +1,11 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="h4 mb-0">{{ __('Edit Record — ') }}{{ $record->student->name }}</h2>
+        <h2 class="h4 mb-0">{{ __('Edit Record') }}</h2>
     </x-slot>
+
+    <x-page-head :title="$record->student->name"
+                 :subtitle="__('Editing the session of :date', ['date' => $record->session_date->format('j F Y')])"
+                 icon="bi-pencil-square" tone="blue" />
 
     <div class="card shadow-sm">
         <div class="card-body">

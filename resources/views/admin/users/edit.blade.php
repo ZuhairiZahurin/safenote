@@ -1,7 +1,26 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="h4 mb-0">{{ __('Edit User — ') }}{{ $user->name }}</h2>
+        <h2 class="h4 mb-0">{{ __('Edit User') }}</h2>
     </x-slot>
+
+    <x-page-head :title="$user->name"
+                 :subtitle="$user->email"
+                 icon="bi-person-gear"
+                 :tone="$user->is_active ? 'blue' : 'slate'">
+        <x-slot name="stats">
+            <span class="sn-pill sn-pill-slate">{{ ucfirst($user->role) }}</span>
+            @if ($user->isLocked())
+                <span class="sn-pill sn-pill-red">{{ __('Locked') }}</span>
+            @elseif (! $user->is_active)
+                <span class="sn-pill sn-pill-slate">{{ __('Deactivated') }}</span>
+            @else
+                <span class="sn-pill sn-pill-green">{{ __('Active') }}</span>
+            @endif
+            @if ($user->must_change_password)
+                <span class="sn-pill sn-pill-amber">{{ __('Must change password') }}</span>
+            @endif
+        </x-slot>
+    </x-page-head>
 
     <div class="card shadow-sm">
         <div class="card-body">

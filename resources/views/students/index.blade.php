@@ -3,31 +3,56 @@
         <h2 class="h4 mb-0">{{ __('Student Profiles') }}</h2>
     </x-slot>
 
-    <div class="card shadow-sm mb-3">
-        <div class="card-body">
+    <x-page-head :title="__('Student Profiles')"
+                 :subtitle="$class
+                    ? __('The students of your class. Basic details only.')
+                    : __('No class has been assigned to your account yet.')"
+                 icon="bi-people"
+                 :tone="$class ? 'blue' : 'amber'">
+        <x-slot name="stats">
+            @if ($class)
+                <x-meter-chip :label="__('students')" :value="$students->total()" tone="blue" />
+                <span class="sn-pill sn-pill-slate">{{ $class }}</span>
+            @endif
+        </x-slot>
+    </x-page-head>
+
+    @if ($class)
+        <div class="sn-filterbar mb-3">
             <form method="GET" action="{{ route('students.index') }}" class="row g-2">
                 <div class="col-sm-8">
-                    <input type="text" name="search" value="{{ $search }}" class="form-control" placeholder="Search by student name...">
+                    <div class="sn-field">
+                        <input type="text" name="search" value="{{ $search }}" class="form-control"
+                               placeholder="{{ __('Search by student name...') }}">
+                        <i class="bi bi-search"></i>
+                    </div>
                 </div>
                 <div class="col-sm-4">
-                    <button type="submit" class="btn btn-outline-secondary w-100">{{ __('Search') }}</button>
+                    <button type="submit" class="btn btn-outline-secondary w-100">
+                        <i class="bi bi-funnel me-1"></i>{{ __('Search') }}
+                    </button>
                 </div>
             </form>
-        </div>
-    </div>
 
-    <div class="alert alert-light border small">
-        <i class="bi bi-info-circle"></i>
-        @if ($class)
-            {{ __('Showing the students of your class, :class. Teachers can view basic student profile information only; confidential counselling notes are not accessible from this role.', ['class' => $class]) }}
-        @else
-            {{ __('No class has been assigned to your account yet, so no student profiles are shown. Please ask the administrator to assign your class.') }}
-        @endif
-    </div>
+            @if ($search)
+                <div class="sn-active-filters">
+                    <span>{{ __('Filtered by') }}</span>
+                    <a class="sn-filter-chip" href="{{ route('students.index') }}">
+                        &ldquo;{{ $search }}&rdquo; <i class="bi bi-x-lg"></i>
+                    </a>
+                </div>
+            @endif
+        </div>
+    @else
+        <div class="sn-alert-band mb-3">
+            <i class="bi bi-exclamation-triangle"></i>
+            <span>{{ __('Ask the administrator to assign your class before student profiles will appear here.') }}</span>
+        </div>
+    @endif
 
     <div class="card shadow-sm">
         <div class="table-responsive">
-            <table class="table mb-0">
+            <table class="table sn-table mb-0">
                 <thead>
                     <tr>
                         <th>{{ __('Name') }}</th>
@@ -38,20 +63,37 @@
                 <tbody>
                     @forelse ($students as $student)
                         <tr>
-                            <td>{{ $student->name }}</td>
-                            <td>{{ $student->class ?? '—' }}</td>
+                            <td><div class="sn-cell-primary">{{ $student->name }}</div></td>
+                            <td class="sn-cell-sub">{{ $student->class ?? '—' }}</td>
                             <td class="text-end">
-                                <a href="{{ route('students.show', $student) }}" class="btn btn-sm btn-outline-primary">{{ __('View') }}</a>
+                                <a href="{{ route('students.show', $student) }}" class="btn btn-sm btn-outline-primary">{{ __('Open') }}</a>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" class="text-center text-muted py-4">{{ $class ? __('No students found in your class.') : __('No class assigned to your account.') }}</td>
+                            <td colspan="3">
+                                <div class="sn-blank">
+                                    <i class="bi bi-people"></i>
+                                    <div class="sn-blank-title">
+                                        {{ $class ? __('No students match.') : __('No class assigned.') }}
+                                    </div>
+                                    <p class="mb-0">
+                                        {{ $class
+                                            ? __('Nobody in your class matches that search.')
+                                            : __('Your account is not tied to a class, so there is nothing to show.') }}
+                                    </p>
+                                </div>
+                            </td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
+    </div>
+
+    <div class="sn-confidential mt-3">
+        <i class="bi bi-shield-lock"></i>
+        <span>{{ __('A teacher sees basic profile details only. Counselling notes about these students are not readable from this account.') }}</span>
     </div>
 
     <div class="mt-3">
