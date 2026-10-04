@@ -806,7 +806,9 @@ a:hover .sn-logo i,
     --series-1: #2a78d6;
     --series-2: #eb6834;
     --series-3: #1baf7a;
+    --series-4: #8392a5;
 }
+
 
 /* Entrance animation ------------------------------------------------------
    Charts draw themselves from the baseline on load, so the reader sees the
@@ -1010,3 +1012,349 @@ a:hover .sn-logo i,
     padding-top: 6px;
     text-align: center;
 }
+
+
+/* ==========================================================================
+   Dashboard
+   ========================================================================== */
+
+/* Greeting band ----------------------------------------------------------- */
+
+.sn-hero {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.35rem 1.5rem;
+    border-radius: var(--sn-radius);
+    background:
+        radial-gradient(1200px 180px at 92% -40%, rgba(42, 120, 214, 0.5), transparent 70%),
+        linear-gradient(135deg, var(--sn-navy) 0%, var(--sn-navy-soft) 100%);
+    color: #fff;
+    box-shadow: var(--sn-shadow);
+}
+
+.sn-hero-greeting {
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.72);
+    margin: 0 0 0.15rem;
+    font-weight: 600;
+}
+
+.sn-hero-name {
+    font-size: 1.35rem;
+    font-weight: 650;
+    margin: 0 0 0.5rem;
+    color: #fff;
+}
+
+.sn-hero-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.82rem;
+}
+
+.sn-hero-chip {
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    color: #fff;
+    padding: 0.12rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.sn-hero-chip-soft {
+    background: rgba(255, 255, 255, 0.08);
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.sn-hero-date { color: rgba(255, 255, 255, 0.68); }
+
+.sn-hero-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+.sn-hero-actions .btn-outline-light { border-color: rgba(255, 255, 255, 0.35); }
+
+/* Stat tiles -------------------------------------------------------------- */
+
+.sn-stat {
+    display: block;
+    position: relative;
+    height: 100%;
+    padding: 1rem 1.1rem 0.9rem;
+    border-radius: var(--sn-radius);
+    background: #fff;
+    border: 1px solid var(--sn-border);
+    box-shadow: var(--sn-shadow);
+    text-decoration: none;
+    overflow: hidden;
+    transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+/* A coloured edge carries the tile's tone without tinting the figure. */
+.sn-stat::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 3px;
+    background: var(--tone, var(--sn-primary));
+}
+
+.sn-stat-blue  { --tone: var(--series-1); --tone-soft: #eaf2fc; }
+.sn-stat-amber { --tone: #e09a1f;         --tone-soft: #fdf4e3; }
+.sn-stat-green { --tone: var(--series-3); --tone-soft: #e6f7f1; }
+.sn-stat-red   { --tone: #c7443f;         --tone-soft: #fcecec; }
+.sn-stat-slate { --tone: #7c8b9d;         --tone-soft: #eff2f6; }
+
+.sn-stat-link:hover {
+    transform: translateY(-2px);
+    border-color: var(--tone);
+    box-shadow: 0 2px 4px rgba(16, 42, 67, 0.06), 0 12px 24px -14px rgba(16, 42, 67, 0.4);
+}
+
+.sn-stat-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.sn-stat-label {
+    font-size: 0.72rem;
+    color: var(--sn-text-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.sn-stat-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: var(--tone-soft);
+    color: var(--tone);
+    font-size: 0.95rem;
+    flex: 0 0 auto;
+}
+
+.sn-stat-value {
+    font-size: 2rem;
+    font-weight: 650;
+    line-height: 1.15;
+    color: var(--sn-text);
+    font-variant-numeric: tabular-nums;
+    margin: 0.3rem 0 0.15rem;
+}
+
+.sn-stat-foot {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.76rem;
+    color: var(--sn-text-soft);
+    min-height: 1.1rem;
+}
+
+.sn-stat-note { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.sn-trend {
+    display: inline-flex;
+    align-items: center;
+    font-weight: 600;
+    font-size: 0.74rem;
+    padding: 0.05rem 0.35rem 0.05rem 0.15rem;
+    border-radius: 999px;
+    font-variant-numeric: tabular-nums;
+}
+
+.sn-trend .bi { font-size: 0.95rem; }
+.sn-trend-up   { background: #e6f7f1; color: #157a56; }
+.sn-trend-down { background: #fdeceb; color: #a93b36; }
+.sn-trend-flat { background: #eff2f6; color: #64748b; }
+
+/* Card headings with an action on the right ------------------------------- */
+
+.sn-card-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.9rem;
+}
+
+.sn-card-total {
+    font-size: 1.1rem;
+    font-weight: 650;
+    color: var(--sn-text);
+    font-variant-numeric: tabular-nums;
+}
+
+.viz-bar-label a { color: inherit; text-decoration: none; }
+.viz-bar-label a:hover { color: var(--sn-primary); text-decoration: underline; }
+
+.sn-legend-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.18rem 0;
+}
+
+/* Lists of recent things -------------------------------------------------- */
+
+.sn-feed-row {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.6rem 0.4rem;
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+    border-bottom: 1px solid var(--sn-border);
+    transition: background 0.12s ease;
+}
+
+.sn-feed-row:last-child { border-bottom: 0; }
+a.sn-feed-row:hover { background: #f6f9fc; }
+.sn-feed-static { cursor: default; }
+
+.sn-feed-main { flex: 1 1 auto; min-width: 0; }
+
+.sn-feed-title {
+    display: block;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--sn-text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sn-feed-sub {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--sn-text-soft);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sn-feed-meta {
+    font-size: 0.76rem;
+    color: var(--sn-text-soft);
+    text-align: right;
+    flex: 0 0 auto;
+    line-height: 1.35;
+}
+
+.sn-feed-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex: 0 0 auto;
+}
+
+/* Urgency is a stripe, and its label is on the element's title. */
+.sn-urgency {
+    width: 4px;
+    height: 30px;
+    border-radius: 2px;
+    flex: 0 0 auto;
+    background: var(--series-4);
+}
+
+.sn-urgency-high { background: #c7443f; }
+.sn-urgency-medium { background: #e09a1f; }
+.sn-urgency-low { background: var(--series-3); }
+
+.sn-pill {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.12rem 0.5rem;
+    border-radius: 999px;
+    white-space: nowrap;
+    flex: 0 0 auto;
+}
+
+.sn-pill-amber { background: #fdf4e3; color: #8a6100; }
+.sn-pill-blue  { background: #eaf2fc; color: #1f5eab; }
+.sn-pill-green { background: #e6f7f1; color: #157a56; }
+.sn-pill-slate { background: #eff2f6; color: #52606d; }
+
+.sn-empty-note {
+    font-size: 0.85rem;
+    color: var(--sn-text-soft);
+    margin: 0.5rem 0 0;
+}
+
+.sn-note {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    color: var(--sn-text-soft);
+    line-height: 1.5;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--sn-border);
+}
+
+.sn-note .bi { color: var(--sn-primary); flex: 0 0 auto; margin-top: 0.1rem; }
+
+.sn-alert-band {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--sn-radius);
+    background: #fdf4e3;
+    border: 1px solid #f0dcb4;
+    color: #7a5600;
+    font-size: 0.86rem;
+}
+
+.sn-alert-band .bi { font-size: 1rem; }
+
+/* Gridlines behind the column chart --------------------------------------- */
+
+.viz-columns { position: relative; }
+
+.viz-gridline {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: var(--at);
+    height: 1px;
+    background: var(--sn-border);
+    opacity: 0.7;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.viz-column-slot { position: relative; z-index: 1; }
+
+@media (max-width: 575.98px) {
+    .sn-hero { padding: 1.1rem 1.15rem; }
+    .sn-hero-name { font-size: 1.15rem; }
+    .sn-stat-value { font-size: 1.6rem; }
+}
+
+
+/* Categorical tone, applied to any mark that carries identity. Declared last so
+   it settles the colour over each element's own default. The label and count
+   always sit beside the mark as text, so colour is never the only signal. */
+.viz-tone-1 { background: var(--series-1); }
+.viz-tone-2 { background: var(--series-2); }
+.viz-tone-3 { background: var(--series-3); }
+.viz-tone-4 { background: var(--series-4); }
+
+.viz-bar-fill.is-zero { background: transparent; }

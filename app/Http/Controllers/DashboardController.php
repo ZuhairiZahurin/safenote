@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AuditLog;
 use App\Models\CounsellingRecord;
 use App\Models\Referral;
 use App\Models\User;
@@ -72,17 +73,38 @@ class DashboardController extends Controller
             ])
             ->values();
 
+        $thisMonth = $base()->whereBetween('session_date', [
+            now()->startOfMonth(), now()->endOfMonth(),
+        ])->count();
+
+        $lastMonth = $base()->whereBetween('session_date', [
+            now()->subMonthNoOverflow()->startOfMonth(),
+            now()->subMonthNoOverflow()->endOfMonth(),
+        ])->count();
+
         return [
             'total' => $total,
-            'thisMonth' => $base()->whereBetween('session_date', [
-                now()->startOfMonth(), now()->endOfMonth(),
-            ])->count(),
+            'thisMonth' => $thisMonth,
+            'lastMonth' => $lastMonth,
+            'monthChange' => $thisMonth - $lastMonth,
             'students' => $base()->distinct('student_id')->count('student_id'),
             'topIssue' => $byIssue->first(fn ($i) => $i['count'] > 0),
             'byIssue' => $byIssue,
             'maxIssueCount' => (int) $byIssue->max('count'),
             'byCategory' => $byCategory,
             'monthly' => $this->monthlyTrend($user),
+            // Work waiting on the counsellor, so the dashboard shows what to do
+            // next rather than only what has already happened.
+            'waiting' => Referral::with('student')
+                ->where('status', Referral::STATUS_PENDING)
+                ->latest()
+                ->take(4)
+                ->get(),
+            'waitingTotal' => Referral::where('status', Referral::STATUS_PENDING)->count(),
+            'recent' => $base()->with('student')
+                ->latest('session_date')
+                ->take(5)
+                ->get(),
         ];
     }
 
@@ -152,6 +174,7 @@ class DashboardController extends Controller
             ->values();
 
         return [
+            'recent' => $base()->with('student')->latest()->take(5)->get(),
             'total' => $base()->count(),
             'pending' => (int) ($statusCounts[Referral::STATUS_PENDING] ?? 0),
             'inReview' => (int) ($statusCounts[Referral::STATUS_IN_REVIEW] ?? 0),
@@ -163,13 +186,34 @@ class DashboardController extends Controller
         ];
     }
 
+    /**
+     * The account picture an Admin is responsible for. It deliberately contains
+     * no counselling data: an Admin manages access, never case content.
+     */
     private function adminStats(): array
     {
+        $roleCounts = User::selectRaw('role, COUNT(*) as total')
+            ->groupBy('role')
+            ->pluck('total', 'role');
+
         return [
             'users' => User::count(),
+            'active' => User::where('is_active', true)->count(),
+            'inactive' => User::where('is_active', false)->count(),
             'locked' => User::whereNotNull('locked_until')
                 ->where('locked_until', '>', Carbon::now())
                 ->count(),
+            'awaitingPasswordChange' => User::where('must_change_password', true)->count(),
+            'byRole' => collect([
+                User::ROLE_ADMIN => 'Administrators',
+                User::ROLE_COUNSELLOR => 'Counsellors',
+                User::ROLE_TEACHER => 'Teachers',
+            ])->map(fn ($label, $key) => [
+                'key' => $key,
+                'label' => $label,
+                'count' => (int) ($roleCounts[$key] ?? 0),
+            ])->values(),
+            'recentActivity' => AuditLog::with('user')->latest()->take(6)->get(),
         ];
     }
 }

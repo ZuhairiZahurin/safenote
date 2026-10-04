@@ -1,44 +1,27 @@
 @php
     $max = max($teacherStats['maxIssueCount'], 1);
+    $statusTone = ['pending' => 'amber', 'in_review' => 'blue', 'closed' => 'green'];
 @endphp
 
-<div class="viz">
+<div class="viz viz-animate">
     <div class="row g-3 mb-4">
-        <div class="col-6 col-lg-3">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <div class="viz-tile-label">{{ __('Referrals Made') }}</div>
-                    <div class="viz-tile-value">{{ $teacherStats['total'] }}</div>
-                    <div class="viz-tile-note">{{ __('All time') }}</div>
-                </div>
-            </div>
+        <div class="col-6 col-xl-3">
+            <x-stat-tile :label="__('Referrals Made')" :value="$teacherStats['total']"
+                         :note="__('All time')" icon="bi-send" tone="blue"
+                         :href="route('referrals.index')" />
         </div>
-        <div class="col-6 col-lg-3">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <div class="viz-tile-label">{{ __('Pending') }}</div>
-                    <div class="viz-tile-value">{{ $teacherStats['pending'] }}</div>
-                    <div class="viz-tile-note">{{ __('Awaiting counsellor') }}</div>
-                </div>
-            </div>
+        <div class="col-6 col-xl-3">
+            <x-stat-tile :label="__('Pending')" :value="$teacherStats['pending']"
+                         :note="__('Awaiting counsellor')" icon="bi-hourglass-split"
+                         :tone="$teacherStats['pending'] > 0 ? 'amber' : 'slate'" />
         </div>
-        <div class="col-6 col-lg-3">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <div class="viz-tile-label">{{ __('In Review') }}</div>
-                    <div class="viz-tile-value">{{ $teacherStats['inReview'] }}</div>
-                    <div class="viz-tile-note">{{ __('Being handled') }}</div>
-                </div>
-            </div>
+        <div class="col-6 col-xl-3">
+            <x-stat-tile :label="__('In Review')" :value="$teacherStats['inReview']"
+                         :note="__('Being handled')" icon="bi-eye" tone="slate" />
         </div>
-        <div class="col-6 col-lg-3">
-            <div class="card shadow-sm h-100">
-                <div class="card-body">
-                    <div class="viz-tile-label">{{ __('Students Referred') }}</div>
-                    <div class="viz-tile-value">{{ $teacherStats['students'] }}</div>
-                    <div class="viz-tile-note">{{ __('Distinct students') }}</div>
-                </div>
-            </div>
+        <div class="col-6 col-xl-3">
+            <x-stat-tile :label="__('Students Referred')" :value="$teacherStats['students']"
+                         :note="__('Distinct students')" icon="bi-people" tone="green" />
         </div>
     </div>
 
@@ -51,14 +34,14 @@
             </div>
         </div>
     @else
-        <div class="row g-3">
+        <div class="row g-3 mb-3">
             <div class="col-lg-6">
                 <div class="card shadow-sm h-100">
                     <div class="card-body">
                         <h3 class="h6 mb-1">{{ __('Referral Progress') }}</h3>
                         <p class="small text-muted mb-3">{{ __('Status of the referrals you submitted.') }}</p>
 
-                        @foreach ($teacherStats['byStatus'] as $row)
+                        @foreach ($teacherStats['byStatus'] as $i => $row)
                             @php $pct = $teacherStats['total'] > 0 ? round($row['count'] / $teacherStats['total'] * 100) : 0; @endphp
                             <div class="viz-bar-row">
                                 <div class="d-flex justify-content-between align-items-baseline mb-1">
@@ -66,8 +49,8 @@
                                     <span class="viz-bar-value">{{ $row['count'] }} <span class="fw-normal text-muted">({{ $pct }}%)</span></span>
                                 </div>
                                 <div class="viz-bar-track">
-                                    <div class="viz-bar-fill {{ $row['count'] === 0 ? 'is-zero' : '' }}"
-                                         style="width: {{ $row['count'] > 0 ? max($pct, 2) : 0 }}%;"></div>
+                                    <div class="viz-bar-fill viz-tone-{{ $i + 1 }} {{ $row['count'] === 0 ? 'is-zero' : '' }}"
+                                         style="--w: {{ $row['count'] > 0 ? max($pct, 2) : 0 }}%; --i: {{ $i }};"></div>
                                 </div>
                             </div>
                         @endforeach
@@ -81,19 +64,43 @@
                         <h3 class="h6 mb-1">{{ __('Reasons You Referred') }}</h3>
                         <p class="small text-muted mb-3">{{ __('Most frequent concerns you raised.') }}</p>
 
-                        @foreach ($teacherStats['byIssue'] as $row)
+                        @foreach ($teacherStats['byIssue'] as $i => $row)
                             <div class="viz-bar-row">
                                 <div class="d-flex justify-content-between align-items-baseline mb-1">
                                     <span class="viz-bar-label">{{ $row['label'] }}</span>
                                     <span class="viz-bar-value">{{ $row['count'] }}</span>
                                 </div>
                                 <div class="viz-bar-track">
-                                    <div class="viz-bar-fill" style="width: {{ max(round($row['count'] / $max * 100), 2) }}%;"></div>
+                                    <div class="viz-bar-fill" style="--w: {{ max(round($row['count'] / $max * 100), 2) }}%; --i: {{ $i }};"></div>
                                 </div>
                             </div>
                         @endforeach
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="sn-card-head">
+                    <div>
+                        <h3 class="h6 mb-1">{{ __('Your Recent Referrals') }}</h3>
+                        <p class="small text-muted mb-0">{{ __('Status only. Counselling notes are never shown to teachers.') }}</p>
+                    </div>
+                    <a href="{{ route('referrals.index') }}" class="small text-decoration-none">{{ __('All referrals') }}</a>
+                </div>
+
+                @foreach ($teacherStats['recent'] as $referral)
+                    <a href="{{ route('referrals.show', $referral) }}" class="sn-feed-row">
+                        <span class="sn-urgency sn-urgency-{{ $referral->urgency }}" title="{{ $referral->urgency_label }}"></span>
+                        <span class="sn-feed-main">
+                            <span class="sn-feed-title">{{ $referral->student?->name ?? __('Unknown student') }}</span>
+                            <span class="sn-feed-sub">{{ $referral->issue_type_label }}</span>
+                        </span>
+                        <span class="sn-pill sn-pill-{{ $statusTone[$referral->status] ?? 'slate' }}">{{ $referral->status_label }}</span>
+                        <span class="sn-feed-meta">{{ $referral->created_at->format('j M') }}</span>
+                    </a>
+                @endforeach
             </div>
         </div>
     @endif
