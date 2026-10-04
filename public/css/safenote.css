@@ -1,0 +1,1012 @@
+/* ---------------------------------------------------------------------------
+   SafeNote visual system
+   Bootstrap 5.3 supplies the grid and components; this file sets the palette,
+   typography, surfaces and the data-visualisation styles on top of it.
+   --------------------------------------------------------------------------- */
+
+:root {
+    --sn-navy: #102a43;
+    --sn-navy-soft: #1c3d5a;
+    --sn-primary: #2a78d6;
+    --sn-primary-dark: #1f5eab;
+    --sn-page: #f1f4f8;
+    --sn-border: #e2e8f0;
+    --sn-text: #16212f;
+    --sn-text-soft: #5a6b7f;
+    --sn-radius: 12px;
+    --sn-shadow: 0 1px 2px rgba(16, 42, 67, 0.05), 0 6px 16px -10px rgba(16, 42, 67, 0.28);
+
+    --bs-primary: var(--sn-primary);
+    --bs-primary-rgb: 42, 120, 214;
+    --bs-link-color: var(--sn-primary-dark);
+    --bs-link-hover-color: var(--sn-navy);
+    --bs-body-color: var(--sn-text);
+    --bs-border-color: var(--sn-border);
+}
+
+body {
+    background-color: var(--sn-page);
+    color: var(--sn-text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.95rem;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 { letter-spacing: -0.01em; }
+
+/* Navigation ------------------------------------------------------------- */
+
+.sn-navbar {
+    background: linear-gradient(180deg, var(--sn-navy) 0%, var(--sn-navy-soft) 100%);
+    padding-block: 0.6rem;
+    box-shadow: 0 2px 10px rgba(16, 42, 67, 0.18);
+}
+
+.sn-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--sn-navy);
+}
+
+.sn-logo i {
+    color: var(--sn-primary);
+    display: inline-block;
+    /* The shield settles into place, then the wordmark follows. */
+    animation: sn-shield-in 0.7s cubic-bezier(0.34, 1.4, 0.5, 1) both;
+    transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.sn-logo {
+    animation: sn-word-in 0.6s ease-out 0.12s both;
+}
+
+@keyframes sn-shield-in {
+    from { opacity: 0; transform: translateY(-6px) scale(0.6) rotate(-12deg); }
+    to { opacity: 1; transform: none; }
+}
+
+@keyframes sn-word-in {
+    from { opacity: 0; transform: translateX(-8px); }
+    to { opacity: 1; transform: none; }
+}
+
+a:hover .sn-logo i,
+.navbar-brand:hover .sn-logo i {
+    transform: scale(1.12) rotate(-6deg);
+    filter: drop-shadow(0 2px 6px rgba(123, 180, 245, 0.55));
+}
+
+.sn-navbar .sn-logo { color: #fff; }
+.sn-navbar .sn-logo i { color: #7bb4f5; }
+
+.sn-navbar .nav-link {
+    color: rgba(255, 255, 255, 0.76);
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.sn-navbar .nav-link:hover,
+.sn-navbar .nav-link:focus {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sn-navbar .nav-link.active {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.16);
+    font-weight: 600;
+}
+
+.sn-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.16);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+/* Page header ------------------------------------------------------------ */
+
+.sn-page-header {
+    background: #fff;
+    border-bottom: 1px solid var(--sn-border);
+    padding-block: 1.1rem;
+}
+
+.sn-page-header h2 {
+    font-size: 1.25rem;
+    font-weight: 650;
+    margin: 0;
+}
+
+.sn-role-chip {
+    display: inline-block;
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+    background: #e8f0fb;
+    color: var(--sn-primary-dark);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+/* Surfaces --------------------------------------------------------------- */
+
+.card {
+    border: 1px solid var(--sn-border);
+    border-radius: var(--sn-radius);
+    box-shadow: var(--sn-shadow) !important;
+}
+
+.card-body { padding: 1.15rem 1.25rem; }
+
+.alert {
+    border-radius: 10px;
+    border: 1px solid var(--sn-border);
+}
+
+.alert-success {
+    background: #e9f7ef;
+    border-color: #bfe5cd;
+    color: #17603a;
+}
+
+.alert-light { background: #f7f9fc; }
+
+/* Buttons ---------------------------------------------------------------- */
+
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.btn-sm { padding: 0.35rem 0.75rem; }
+
+.btn-primary {
+    background-color: var(--sn-primary);
+    border-color: var(--sn-primary);
+    box-shadow: 0 1px 2px rgba(31, 94, 171, 0.35);
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background-color: var(--sn-primary-dark) !important;
+    border-color: var(--sn-primary-dark) !important;
+}
+
+.btn-outline-secondary {
+    color: var(--sn-text);
+    border-color: #cbd5e1;
+    background: #fff;
+}
+
+.btn-outline-secondary:hover {
+    background: #eef2f7;
+    color: var(--sn-navy);
+    border-color: #b6c2d1;
+}
+
+.btn-outline-primary {
+    color: var(--sn-primary-dark);
+    border-color: #bcd6f5;
+    background: #fff;
+}
+
+.btn-outline-primary:hover {
+    background: var(--sn-primary);
+    border-color: var(--sn-primary);
+}
+
+/* Forms ------------------------------------------------------------------ */
+
+.form-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--sn-text-soft);
+    margin-bottom: 0.3rem;
+}
+
+.form-control,
+.form-select {
+    border-radius: 8px;
+    border-color: #cfd8e3;
+    padding: 0.5rem 0.75rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--sn-primary);
+    box-shadow: 0 0 0 3px rgba(42, 120, 214, 0.15);
+}
+
+.form-text { color: var(--sn-text-soft); }
+
+/* Tables ----------------------------------------------------------------- */
+
+.table {
+    --bs-table-hover-bg: #f5f8fc;
+    margin-bottom: 0;
+}
+
+.table > :not(caption) > * > * {
+    vertical-align: middle;
+    padding: 0.7rem 0.9rem;
+}
+
+.table thead th {
+    background: #f7f9fc;
+    color: var(--sn-text-soft);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--sn-border);
+    white-space: nowrap;
+}
+
+.table tbody tr { border-color: #eef2f7; }
+
+/* Badges ----------------------------------------------------------------- */
+
+.badge {
+    border-radius: 999px;
+    padding: 0.32em 0.7em;
+    font-weight: 600;
+    font-size: 0.74rem;
+}
+
+.badge.text-bg-warning { background-color: #fdf0d5 !important; color: #8a5a00 !important; }
+.badge.text-bg-info { background-color: #e0f0fb !important; color: #12607f !important; }
+.badge.text-bg-success { background-color: #e3f5ea !important; color: #1a6b41 !important; }
+.badge.text-bg-danger { background-color: #fdeaea !important; color: #a02532 !important; }
+.badge.text-bg-secondary { background-color: #eceff3 !important; color: #46556a !important; }
+.badge.text-bg-light { background-color: #f2f5f9 !important; color: #3d4b5c !important; }
+
+.sn-navbar .badge.text-bg-warning { background-color: #f6c343 !important; color: #3d2c00 !important; }
+
+/* Urgency marker --------------------------------------------------------- */
+
+.sn-urgency {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--sn-text-soft);
+    white-space: nowrap;
+}
+
+.sn-urgency::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.sn-urgency--high { color: #c62f3d; }
+.sn-urgency--medium { color: #b8730f; }
+.sn-urgency--low { color: #6b7a8d; }
+
+/* Referral inbox --------------------------------------------------------- */
+
+.sn-tabs {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    background: #e9eef5;
+    border-radius: 10px;
+    padding: 0.25rem;
+}
+
+.sn-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--sn-text-soft);
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.sn-tab:hover { color: var(--sn-navy); background: rgba(255, 255, 255, 0.6); }
+
+.sn-tab.is-active {
+    background: #fff;
+    color: var(--sn-navy);
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(16, 42, 67, 0.12);
+}
+
+.sn-tab-count {
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: #dbe3ed;
+    color: #46556a;
+    border-radius: 999px;
+    padding: 0.05rem 0.42rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.sn-tab.is-active .sn-tab-count { background: #e8f0fb; color: var(--sn-primary-dark); }
+
+.sn-wait-note { font-size: 0.85rem; color: var(--sn-text-soft); }
+
+/* A high-urgency case that is still open carries a red edge. */
+.sn-inbox tr.sn-row-urgent td:first-child { box-shadow: inset 3px 0 0 #c62f3d; }
+
+.sn-sub { font-size: 0.8rem; color: var(--sn-text-soft); }
+
+.sn-overdue { font-size: 0.85rem; font-weight: 600; color: #c62f3d; }
+
+.sn-empty { text-align: center; padding: 2.5rem 1rem; color: var(--sn-text-soft); }
+.sn-empty i { font-size: 1.8rem; display: block; margin-bottom: 0.5rem; opacity: 0.5; }
+
+/* Detail lists ----------------------------------------------------------- */
+
+.card dl dt {
+    color: var(--sn-text-soft);
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding-top: 0.1rem;
+}
+
+.card dl dd { color: var(--sn-text); }
+
+/* Pagination ------------------------------------------------------------- */
+
+.pagination { margin-bottom: 0; }
+
+.page-link {
+    border-radius: 8px !important;
+    margin: 0 2px;
+    border-color: var(--sn-border);
+    color: var(--sn-text-soft);
+}
+
+.page-item.active .page-link {
+    background-color: var(--sn-primary);
+    border-color: var(--sn-primary);
+}
+
+/* Login screen ----------------------------------------------------------- */
+
+.sn-auth {
+    min-height: 100vh;
+    padding: 2rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(900px 600px at 15% 20%, rgba(56, 132, 220, 0.30), transparent 60%),
+        radial-gradient(800px 600px at 85% 80%, rgba(23, 162, 160, 0.28), transparent 62%),
+        linear-gradient(135deg, #0b1f36 0%, #143050 45%, #10293f 100%);
+}
+
+/* Slow drifting light behind the panel; purely decorative. */
+.sn-auth::before,
+.sn-auth::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.sn-auth::before {
+    width: 420px; height: 420px;
+    background: rgba(42, 120, 214, 0.55);
+    top: -120px; left: -80px;
+    animation: sn-drift-a 18s ease-in-out infinite alternate;
+}
+
+.sn-auth::after {
+    width: 380px; height: 380px;
+    background: rgba(23, 162, 160, 0.45);
+    bottom: -140px; right: -60px;
+    animation: sn-drift-b 22s ease-in-out infinite alternate;
+}
+
+@keyframes sn-drift-a {
+    from { transform: translate(0, 0) scale(1); }
+    to { transform: translate(90px, 70px) scale(1.15); }
+}
+
+@keyframes sn-drift-b {
+    from { transform: translate(0, 0) scale(1.1); }
+    to { transform: translate(-80px, -60px) scale(1); }
+}
+
+/* Two-panel shell ---------------------------------------------------------- */
+
+.sn-auth-shell {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 940px;
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    border-radius: 20px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 30px 70px -30px rgba(3, 14, 26, 0.85);
+    animation: sn-shell-in 0.6s cubic-bezier(0.22, 0.8, 0.3, 1) both;
+}
+
+@keyframes sn-shell-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+}
+
+.sn-auth-brand {
+    padding: 2.6rem 2.4rem;
+    color: #fff;
+    background: linear-gradient(160deg, rgba(10, 32, 56, 0.72), rgba(11, 45, 63, 0.55));
+    backdrop-filter: blur(6px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.6rem;
+}
+
+.sn-auth-brand h1 {
+    font-size: 1.45rem;
+    font-weight: 650;
+    line-height: 1.35;
+    margin: 0;
+}
+
+.sn-auth-points {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.9rem;
+}
+
+.sn-auth-points li {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.82);
+    animation: sn-point-in 0.5s ease-out both;
+}
+
+.sn-auth-points li:nth-child(1) { animation-delay: 0.25s; }
+.sn-auth-points li:nth-child(2) { animation-delay: 0.35s; }
+.sn-auth-points li:nth-child(3) { animation-delay: 0.45s; }
+
+@keyframes sn-point-in {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: none; }
+}
+
+.sn-auth-points i {
+    flex: 0 0 auto;
+    width: 30px; height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    background: rgba(123, 180, 245, 0.18);
+    color: #8ec5ff;
+    font-size: 0.95rem;
+}
+
+.sn-auth-points strong {
+    display: block;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.92rem;
+    margin-bottom: 0.1rem;
+}
+
+.sn-auth-panel {
+    background: #fff;
+    padding: 2.6rem 2.4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.sn-auth-panel h2 {
+    font-size: 1.3rem;
+    font-weight: 650;
+    margin-bottom: 0.25rem;
+}
+
+.sn-auth-panel .sn-auth-sub {
+    color: var(--sn-text-soft);
+    font-size: 0.88rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Inputs with a leading icon and a reveal button */
+.sn-field { position: relative; }
+
+/* Direct child only: the leading icon. An icon inside the reveal button must
+   stay in the button's own flow, or it lands outside the clickable box. */
+.sn-field > .bi {
+    position: absolute;
+    left: 0.85rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9aa7b6;
+    font-size: 0.95rem;
+    transition: color 0.15s ease;
+    pointer-events: none;
+}
+
+.sn-field .form-control {
+    padding-left: 2.5rem;
+    height: 46px;
+}
+
+/* Room for the reveal button so a long password does not run underneath it.
+   Keyed off the class, not the type, so revealing the text shifts nothing. */
+.sn-field .form-control.has-reveal {
+    padding-right: 3rem;
+}
+
+.sn-field .form-control:focus ~ .bi { color: var(--sn-primary); }
+
+.sn-reveal {
+    position: absolute;
+    right: 0.4rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: 0;
+    background: transparent;
+    color: #8b98a8;
+    border-radius: 8px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+.sn-reveal .bi {
+    position: static;
+    font-size: 1rem;
+    pointer-events: none;
+}
+
+.sn-reveal:hover { color: var(--sn-primary-dark); background: #eef3fa; }
+
+.sn-reveal:focus-visible {
+    outline: 2px solid var(--sn-primary);
+    outline-offset: 1px;
+    color: var(--sn-primary-dark);
+}
+
+/* Password help page: the procedure for getting a new password */
+.sn-notice {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    border-radius: 10px;
+    background: #eef4fb;
+    border: 1px solid #d7e4f3;
+    color: #334a63;
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.sn-notice .bi {
+    color: var(--sn-primary);
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+}
+
+.sn-steps {
+    list-style: none;
+    counter-reset: sn-step;
+    padding: 0;
+    margin: 0 0 1.5rem;
+}
+
+.sn-steps li {
+    counter-increment: sn-step;
+    position: relative;
+    padding: 0 0 1.05rem 2.4rem;
+}
+
+.sn-steps li::before {
+    content: counter(sn-step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--sn-primary);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* The line joining one step to the next, stopping at the last one. */
+.sn-steps li::after {
+    content: '';
+    position: absolute;
+    left: 12.5px;
+    top: 30px;
+    bottom: 0.3rem;
+    width: 1px;
+    background: #dde5ef;
+}
+
+.sn-steps li:last-child { padding-bottom: 0; }
+.sn-steps li:last-child::after { display: none; }
+
+.sn-step-title {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--sn-text);
+    margin-bottom: 0.15rem;
+}
+
+.sn-step-body {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--sn-text-soft);
+    line-height: 1.5;
+}
+
+.sn-contact {
+    border: 1px solid var(--sn-border);
+    border-radius: 10px;
+    padding: 0.9rem 1rem;
+    background: #fbfcfe;
+}
+
+.sn-contact-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.87rem;
+    padding: 0.28rem 0;
+    color: var(--sn-text);
+}
+
+.sn-contact-row .bi {
+    color: var(--sn-primary);
+    font-size: 0.95rem;
+    width: 1.1rem;
+    text-align: center;
+}
+
+.sn-contact-row a {
+    color: var(--sn-text);
+    text-decoration: none;
+}
+
+.sn-contact-row a:hover { color: var(--sn-primary); text-decoration: underline; }
+
+.sn-auth-panel .btn-primary {
+    height: 46px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    transition: transform 0.12s ease, box-shadow 0.2s ease;
+}
+
+.sn-auth-panel .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px -8px rgba(31, 94, 171, 0.9);
+}
+
+.sn-auth-panel .btn-primary:active { transform: translateY(0); }
+
+.sn-auth-panel .btn-primary.is-busy {
+    pointer-events: none;
+    opacity: 0.85;
+}
+
+@media (max-width: 767.98px) {
+    .sn-auth-shell { grid-template-columns: 1fr; max-width: 460px; }
+    .sn-auth-brand { padding: 1.8rem; gap: 1.1rem; }
+    .sn-auth-panel { padding: 1.9rem 1.6rem; }
+}
+
+.sn-auth .sn-logo {
+    color: #fff;
+    font-size: 1.6rem;
+}
+
+.sn-auth .sn-logo i {
+    color: #7bb4f5;
+    /* On the sign-in screen the shield keeps a slow, calm pulse. */
+    animation: sn-shield-in 0.7s cubic-bezier(0.34, 1.4, 0.5, 1) both,
+               sn-shield-pulse 3.6s ease-in-out 0.9s infinite;
+}
+
+@keyframes sn-shield-pulse {
+    0%, 100% { filter: drop-shadow(0 0 0 rgba(123, 180, 245, 0)); transform: none; }
+    50% { filter: drop-shadow(0 0 12px rgba(123, 180, 245, 0.75)); transform: scale(1.06); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sn-logo,
+    .sn-logo i,
+    .sn-auth .sn-logo i,
+    .sn-auth::before,
+    .sn-auth::after,
+    .sn-auth-shell,
+    .sn-auth-points li {
+        animation: none !important;
+    }
+}
+
+.sn-auth-tagline {
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.88rem;
+}
+
+.sn-auth-card {
+    width: 100%;
+    max-width: 420px;
+    border-radius: 14px;
+    box-shadow: 0 18px 40px -22px rgba(6, 22, 40, 0.55) !important;
+}
+
+.sn-auth-note {
+    color: var(--sn-text-soft);
+    font-size: 0.8rem;
+}
+
+/* ---------------------------------------------------------------------------
+   Dashboard statistics
+   Palette roles are declared once here and referenced by role below.
+   Categorical slots 1-3 are validated for CVD separation on a white surface.
+   --------------------------------------------------------------------------- */
+
+.viz {
+    --surface-1: #ffffff;
+    --text-primary: #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted: #898781;
+    --gridline: #e1e0d9;
+    --baseline: #c3c2b7;
+
+    /* Sequential hue (magnitude) */
+    --seq: #2a78d6;
+    --seq-track: #eef2f6;
+
+    /* Categorical slots (identity) */
+    --series-1: #2a78d6;
+    --series-2: #eb6834;
+    --series-3: #1baf7a;
+}
+
+/* Entrance animation ------------------------------------------------------
+   Charts draw themselves from the baseline on load, so the reader sees the
+   magnitude being measured out rather than a static block.
+   --------------------------------------------------------------------------- */
+
+@keyframes viz-grow-x {
+    from { width: 0; }
+    to { width: var(--w); }
+}
+
+@keyframes viz-grow-y {
+    from { height: 0; }
+    to { height: var(--h); }
+}
+
+@keyframes viz-fade-up {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: none; }
+}
+
+.viz-animate .viz-bar-fill,
+.viz-animate .viz-stack-seg {
+    width: var(--w);
+    animation: viz-grow-x 0.85s cubic-bezier(0.22, 0.8, 0.3, 1) both;
+    animation-delay: calc(var(--i, 0) * 55ms);
+}
+
+.viz-animate .viz-column-fill {
+    height: var(--h);
+    animation: viz-grow-y 0.8s cubic-bezier(0.22, 0.8, 0.3, 1) both;
+    animation-delay: calc(var(--i, 0) * 70ms);
+}
+
+.viz-animate .viz-column-value,
+.viz-animate .viz-legend-label,
+.viz-animate .viz-legend-value {
+    animation: viz-fade-up 0.5s ease-out both;
+    animation-delay: calc(240ms + var(--i, 0) * 70ms);
+}
+
+.viz-animate .card { animation: viz-fade-up 0.45s ease-out both; }
+
+/* Anyone who has asked their system to reduce motion sees the final state. */
+@media (prefers-reduced-motion: reduce) {
+    .viz-animate .viz-bar-fill,
+    .viz-animate .viz-stack-seg,
+    .viz-animate .viz-column-fill,
+    .viz-animate .viz-column-value,
+    .viz-animate .viz-legend-label,
+    .viz-animate .viz-legend-value,
+    .viz-animate .card {
+        animation: none !important;
+    }
+}
+
+/* Stat tiles ------------------------------------------------------------- */
+
+.viz-tile-label {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+}
+
+.viz-tile-value {
+    font-size: 2.1rem;
+    font-weight: 650;
+    line-height: 1.1;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+    margin-top: 0.1rem;
+}
+
+.viz-tile-note {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+}
+
+/* Horizontal magnitude bars ---------------------------------------------- */
+
+.viz-bar-row + .viz-bar-row {
+    margin-top: 0.6rem;
+}
+
+.viz-bar-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.viz-bar-value {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+.viz-bar-track {
+    position: relative;
+    height: 10px;
+    border-radius: 5px;
+    background: var(--seq-track);
+    overflow: hidden;
+}
+
+.viz-bar-fill {
+    height: 100%;
+    background: var(--seq);
+    /* Rounded data-end, anchored flat to the baseline at the left. */
+    border-radius: 0 4px 4px 0;
+    min-width: 2px;
+}
+
+.viz-bar-fill.is-zero {
+    background: transparent;
+}
+
+/* Part-to-whole stacked bar ---------------------------------------------- */
+
+.viz-stack {
+    display: flex;
+    height: 14px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--seq-track);
+    /* 2px surface gap between adjacent fills */
+    gap: 2px;
+}
+
+.viz-stack-seg {
+    height: 100%;
+}
+
+.viz-stack-seg:first-child { border-radius: 4px 0 0 4px; }
+.viz-stack-seg:last-child { border-radius: 0 4px 4px 0; }
+
+.viz-swatch {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    flex: 0 0 auto;
+}
+
+.viz-legend-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.viz-legend-value {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Monthly column chart ---------------------------------------------------- */
+
+.viz-columns {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    height: 130px;
+    border-bottom: 1px solid var(--baseline);
+    padding-bottom: 0;
+}
+
+.viz-column-slot {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+}
+
+.viz-column-fill {
+    width: 100%;
+    background: var(--seq);
+    /* Rounded data-end at the top, flat on the baseline. */
+    border-radius: 4px 4px 0 0;
+    min-height: 2px;
+}
+
+.viz-column-fill.is-zero {
+    background: var(--seq-track);
+}
+
+.viz-column-value {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+    font-variant-numeric: tabular-nums;
+}
+
+.viz-column-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    padding-top: 6px;
+    text-align: center;
+}
