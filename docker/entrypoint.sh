@@ -19,8 +19,10 @@ php artisan view:cache
 php artisan migrate --force
 
 # Set SEED_DEMO_DATA=true for the very first deploy only, then remove it.
+# A failure here must not take the site down with it: the schema is already
+# migrated, so the app can serve while the seeding problem is looked at.
 if [ "${SEED_DEMO_DATA}" = "true" ]; then
-    php artisan db:seed --force
+    php artisan db:seed --force || echo "Seeding failed. The site is starting anyway; demo data is incomplete." >&2
 fi
 
 exec apache2-foreground
